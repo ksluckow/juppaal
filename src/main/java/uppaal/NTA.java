@@ -21,6 +21,7 @@ import org.jdom.output.XMLOutputter;
 public class NTA extends UppaalElement{
 	private Declaration declarations = new Declaration();
 	private SystemDeclaration systemDeclaration = new SystemDeclaration();
+	
 	public SystemDeclaration getSystemDeclaration() {
 		return systemDeclaration;
 	}

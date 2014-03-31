@@ -9,6 +9,19 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>internal-repo</id>
+			<url>http://maven.klapfis.dk</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>ssh-repository</id>
+			<url>scpexe://maven.klapfis.dk/var/www/maven</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -69,6 +82,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>2.6</version>
+			</extension>
+		</extensions>
 	</build>
 	<dependencies>
 		<dependency>

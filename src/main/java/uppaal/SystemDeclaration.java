@@ -1,5 +1,6 @@
 package uppaal;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,17 +14,25 @@ public class SystemDeclaration extends UppaalElement{
 	public SystemDeclaration(Element child) {
 		String decls[] = child.getText().split("\n");
 		boolean foundInstances = false;
+		boolean foundProgress = false;
 		for(String declaration : decls) {
+			if(declaration.replaceAll("\\s", "").startsWith("progress")) {
+				foundProgress = true;
+			}
 			if(declaration.replaceAll("\\s", "").equals("system")) {
 				foundInstances = true;
 				continue;
 			}
-			if(!foundInstances)
+			if(!foundInstances && !foundProgress)
 				declarations.add(declaration);
-			else {
+			else if(foundInstances && !foundProgress){
 				String instance = declaration.replaceAll("[\\s,;]", "");
 				if(!"".equals(instance))
 					systemInstances.add(instance);
+			} else if(foundInstances && foundProgress) {
+				String instance = declaration.replaceAll("[\\s,;]", "");
+				if(!"".equals(instance))
+					progressMeasures.add(instance);
 			}
 		}
 	}
@@ -32,6 +41,16 @@ public class SystemDeclaration extends UppaalElement{
 	}
 	
 	List<String> systemInstances = new LinkedList<String>();
+	List<String> progressMeasures = new LinkedList<String>();
+	
+	public void addProgressMeasure(String measure) {
+		progressMeasures.add(measure);
+	}
+	
+	public List<String> getProgressMeasures() {
+		return this.progressMeasures;
+	}
+	
 	public void addSystemInstance(String instance){
 		systemInstances.add(instance);
 	}
@@ -70,6 +89,13 @@ public class SystemDeclaration extends UppaalElement{
 			for(int index=0;index<systemInstances.size();index++){
 				sb.append(systemInstances.get(index) + ((index+1)<systemInstances.size()?",\n\t":";"));
 			}
+		}
+		if(progressMeasures.size() > 0) {
+			sb.append("\nprogress {\n");
+			Iterator<String> iter = progressMeasures.iterator();
+			while(iter.hasNext())
+				sb.append("\t\t\t").append(iter.next()).append(";\n");
+			sb.append("\t\t }");
 		}
 		Element result = super.generateXMLElement();
 		result.addContent(sb.toString());
