@@ -1,0 +1,7 @@
+syntax: regexp
+target      # maven output
+\.classpath # eclipse
+\.project   # eclipse
+\.settings  # eclipse
+\.bzr  # eclipse
+test-output # eclipse junit/testng plugin output
