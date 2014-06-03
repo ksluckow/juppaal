@@ -12,13 +12,13 @@
 	<repositories>
 		<repository>
 			<id>internal-repo</id>
-			<url>http://maven.klapfis.dk</url>
+			<url>http://maven.luckow.me</url>
 		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
 			<id>ssh-repository</id>
-			<url>scpexe://maven.klapfis.dk/var/www/maven</url>
+			<url>scpexe://maven.luckow.me/var/www/maven.luckow.me</url>
 		</repository>
 	</distributionManagement>
 
