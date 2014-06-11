@@ -100,7 +100,9 @@ public class Transition {
 	 */
 	public Transition(Automaton automaton, Location source, Location destination) {
 		this.source = source;
+		this.source.addOutgoingTransition(this);
 		this.destination = destination;
+		this.destination.addIncomingTransition(this);
 		this.automaton = automaton;
 		automaton.addTransition(this);
 	}
@@ -117,12 +119,13 @@ public class Transition {
 		boolean dbg_matchresult = matcher.find();
 		assert dbg_matchresult;
 		source = automaton.id_locationMap.get("id" + matcher.group(1));
+		source.addOutgoingTransition(this);
 		String targetString = transitionElement.getChild("target").getAttributeValue("ref");
 		matcher = locationIdRegExPattern.matcher(targetString);
 		dbg_matchresult = matcher.find();
 		assert dbg_matchresult;
 		destination = automaton.id_locationMap.get("id" + matcher.group(1));
-
+		destination.addIncomingTransition(this);
 		@SuppressWarnings("unchecked")
 		List<Element> children = transitionElement.getChildren();
 		for(Element child: children){

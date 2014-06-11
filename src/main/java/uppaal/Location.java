@@ -86,7 +86,8 @@ public class Location extends PositionedUppaalElement{
 		String idMatch = regExMatcher.group();
 
 		this.id=Integer.parseInt(idMatch);
-
+		this.incomingTrans = new LinkedList<Transition>();
+		this.outgoingTrans = new LinkedList<Transition>();
 		automaton.addLocation(this);
 		this.setAutomaton(automaton);
 	}
@@ -106,6 +107,8 @@ public class Location extends PositionedUppaalElement{
 		this.comment = new Comment();
 		this.invariant = new Invariant(x, y);
 		this.expRate = new ExponentialRate(x,y);
+		this.incomingTrans = new LinkedList<Transition>();
+		this.outgoingTrans = new LinkedList<Transition>();
 		automaton.addLocation(this);
 		this.setAutomaton(automaton);
 	}
@@ -266,25 +269,44 @@ public class Location extends PositionedUppaalElement{
 		this.expRate = exponentialRate;
 	}
 	
+	private List<Transition> outgoingTrans;
+	private List<Transition> incomingTrans;
+	
+	public void addIncomingTransition(Transition trans) {
+		this.incomingTrans.add(trans);
+	}
+	public void addOutgoingTransition(Transition trans) {
+		this.outgoingTrans.add(trans);
+	}
+	
 	public List<Location> getSuccessors(){
-		return automaton.getSuccs(this);
+		LinkedList<Location> locs = new LinkedList<Location>();
+		for(Transition out : this.outgoingTrans) {
+			locs.add(out.getTarget());
+		}
+		return locs;
 	}
 	public List<Location> getPredecessors(){
-		return automaton.getPreds(this);
+		LinkedList<Location> locs = new LinkedList<Location>();
+		for(Transition in : this.incomingTrans) {
+			locs.add(in.getSource());
+		}
+		return locs;
 	}
+	
 	public boolean isBranching(){
-		return automaton.isBranching(this);
+		return outgoingTrans.size() > 1;
 	}
 	public boolean isMerging(){
-		return automaton.isMerging(this);
+		return incomingTrans.size() > 1;
 	}
 	
 	public List<Transition> getOutgoingTransitions(){
-		return automaton.getOutgoingTransitions(this);
+		return this.outgoingTrans;
 	}
 	
 	public List<Transition> getIncommingTransitions(){
-		return automaton.getIncommingTransitions(this);
+		return this.incomingTrans;
 	}
 
 	public void setTransitional(boolean transitional) {
