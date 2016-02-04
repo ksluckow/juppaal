@@ -8,7 +8,6 @@ JUppaal is shipped with a Maven build file. To build and install it, simply exec
 ```!bash
 $ gradle build
 ```
-
 # Authors
 * Thomas Bøgholm
 * Kasper Luckow
