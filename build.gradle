@@ -16,7 +16,7 @@ task wrapper(type: Wrapper) {
 
 repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
-    maven { url "http://eulergui.sourceforge.net/" }
+    maven { url "http://eulergui.sourceforge.net/maven2/" }
     mavenLocal()
     mavenCentral()
 }
