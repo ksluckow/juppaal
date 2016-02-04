@@ -1,4 +1,4 @@
-# JUppaal
+# JUppaal [![Build Status](https://travis-ci.org/ksluckow/JUppaal.svg?branch=master)](https://travis-ci.org/ksluckow/JUppaal)
 Java API for working with UPPAAL model files.
 
 Allows to create UPPAAL Timed Automata models programmatically in Java. The library also supports loading UPPAAL models and manipulating them
