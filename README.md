@@ -6,7 +6,7 @@ Allows to create UPPAAL Timed Automata models programmatically in Java. The libr
 # Installation
 JUppaal is shipped with a Maven build file. To build and install it, simply execute
 ```!bash
-$ mvn install
+$ gradle build
 ```
 
 # Authors
