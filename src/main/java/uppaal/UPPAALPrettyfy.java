@@ -80,7 +80,8 @@ public class UPPAALPrettyfy {
 
 			while ((line = lreader.readLine()) != null) {
 				if (line.contains("height")) {
-					elementName = line.substring(0, line.indexOf(' ')).trim();
+				  int end = line.indexOf(' ');
+					elementName = (end > 0) ? line.substring(0, end).trim() : "";
 					Matcher matcher = posPattern.matcher(line);
 					if (matcher.find()) {
 						x = Integer.valueOf(matcher.group(1));
