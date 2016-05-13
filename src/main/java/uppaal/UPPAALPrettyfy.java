@@ -105,14 +105,21 @@ public class UPPAALPrettyfy {
 		String filename = "/tmp/juppaal/" + template.getChildText("name") + ".dot";
 		File file = new File(filename);
 		if(!file.exists())
-			file.createNewFile();
+		  file.createNewFile();
 		FileOutputStream fo = new FileOutputStream(new File(filename));
 		graph.printGraph(fo);
 		if(template.getChildren().size()<500){
-			Process proc = Runtime.getRuntime().exec("dot -T dot -O " +filename);
-			proc.waitFor();
-			proc.exitValue();
-			proc.destroy();
+		  String OS = System.getProperty("os.name").toLowerCase();
+		  String dotCmd;
+		  if(OS.contains("mac"))
+		    dotCmd = "/usr/local/bin/dot";
+		  else
+		    dotCmd = "/usr/bin/dot";
+
+		  Process proc = Runtime.getRuntime().exec(dotCmd + " -T dot -O " +filename);
+		  proc.waitFor();
+		  proc.exitValue();
+		  proc.destroy();
 		}
 		else{
 			return new File(filename);
