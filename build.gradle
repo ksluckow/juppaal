@@ -5,7 +5,7 @@ apply plugin: 'eclipse'
 group = 'dk.aau.cs.uppaal'
 version = '1.0.0'
 
-description = "JUppaal"
+description = "juppaal"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
