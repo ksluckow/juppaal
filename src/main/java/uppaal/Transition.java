@@ -1,5 +1,6 @@
 package uppaal;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,7 +40,8 @@ public class Transition {
 	
 	private List<Nail> nails = new ArrayList<Nail>();
 	private Update update;
-	
+	private Color color;
+
 	public int removeStumpAngles(double angleThreshold, double lengthThreshold){
 		// dot product: Ax * Bx + Ay * By
 		// angle = acos(dot(v1, v2))
@@ -126,6 +128,7 @@ public class Transition {
 		assert dbg_matchresult;
 		destination = automaton.id_locationMap.get("id" + matcher.group(1));
 		destination.addIncomingTransition(this);
+		color = ColorUtil.findColor(transitionElement);
 		@SuppressWarnings("unchecked")
 		List<Element> children = transitionElement.getChildren();
 		for(Element child: children){
@@ -216,8 +219,15 @@ public class Transition {
 		else
 			this.update.add(update);
 	}
-	
-	
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	/**
 	 * Creates an XML Element object corresponding to the Transition object
 	 * @return XML Element
@@ -247,7 +257,9 @@ public class Transition {
 			result.addContent(this.update.generateXMLElement());
 		if(prob!=null)
 			result.addContent(this.prob.generateXMLElement());
-		
+		if (color!=null)
+			result.setAttribute("color", ColorUtil.toHexString(color));
+
 		for (Nail nail : nails) {
 			result.addContent(nail.generateXMLElement());
 		}

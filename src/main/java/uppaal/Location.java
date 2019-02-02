@@ -1,5 +1,6 @@
 package uppaal;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,6 +51,7 @@ public class Location extends PositionedUppaalElement{
 	private ExponentialRate expRate;
 	private Name name;
 	private LocationType type;
+	private Color color;
 	/*
 	 * todo: ideally, a separate type should be made for branchpoints
 	 */
@@ -62,6 +64,7 @@ public class Location extends PositionedUppaalElement{
 	public Location(Automaton automaton, Element locationElement) {
 		super(locationElement); // get coordinates
 		type = getLocationType(locationElement);
+		color = ColorUtil.findColor(locationElement);
 		@SuppressWarnings("unchecked")
 		List<Element> children = locationElement.getChildren();
 		for(Element child: children){
@@ -153,7 +156,12 @@ public class Location extends PositionedUppaalElement{
 			default:
 				break;
 			}
-		}		
+		}
+
+		if (color!=null) {
+			result.setAttribute("color", ColorUtil.toHexString(color));
+		}
+
 		return result;
 	}
 	
@@ -192,7 +200,11 @@ public class Location extends PositionedUppaalElement{
 	public LocationType getType() {
 		return type;
 	}
-	
+
+	public Color getColor() {
+		return color;
+	}
+
 	public void setBranchPointLocation(boolean isBranchPoint) {
 		this.branchPointLocation = isBranchPoint;
 	}
@@ -247,6 +259,10 @@ public class Location extends PositionedUppaalElement{
 	
 	public void setType(LocationType type) {
 		this.type = type;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	@Override
