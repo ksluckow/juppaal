@@ -1,8 +1,7 @@
 package uppaal;
 
 
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,33 +46,43 @@ public class NTA extends UppaalElement{
 //			
 //		}
 //	}
-	
-	public NTA(String uppaalFile){
+
+	public NTA(String uppaalFile) {
 		SAXBuilder builder = new SAXBuilder();
 		try {
 			Document uppaalDoc = builder.build(uppaalFile);
-			@SuppressWarnings("unchecked")
-			Iterator<Element> i = uppaalDoc.getRootElement().getChildren().iterator();
-			while (i.hasNext()) {
-				Element child = i.next();
-				if (child.getName().equals("declaration")) {
-					assert child.getContent().size() == 1 : "Declaration elements should not have children";
-					declarations = new Declaration(child);
-				} else if (child.getName().equals("template")) {
-					Automaton automaton = new Automaton(child);
-					automata.add(automaton);
-				} else if (child.getName().equals("system")) {
-					systemDeclaration = new SystemDeclaration(child);
-				} else {
-					System.err.println("unhandled element: "+child.getName());
-				}
+			buildNTA(uppaalDoc);
+		} catch (IOException | JDOMException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public NTA(InputStream uppaalFile) {
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Document uppaalDoc = builder.build(uppaalFile);
+			buildNTA(uppaalDoc);
+		} catch (IOException | JDOMException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void buildNTA(Document uppaalDoc){
+		@SuppressWarnings("unchecked")
+		Iterator<Element> i = uppaalDoc.getRootElement().getChildren().iterator();
+		while (i.hasNext()) {
+			Element child = i.next();
+			if (child.getName().equals("declaration")) {
+				assert child.getContent().size() == 1 : "Declaration elements should not have children";
+				declarations = new Declaration(child);
+			} else if (child.getName().equals("template")) {
+				Automaton automaton = new Automaton(child);
+				automata.add(automaton);
+			} else if (child.getName().equals("system")) {
+				systemDeclaration = new SystemDeclaration(child);
+			} else {
+				System.err.println("unhandled element: "+child.getName());
 			}
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
