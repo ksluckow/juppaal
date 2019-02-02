@@ -16,9 +16,8 @@ class ColorUtil {
         try {
             return Color.decode(color);
         } catch (NumberFormatException | NullPointerException e) {
-            // do nothing
+            return null;
         }
-        return null;
     }
 
     /**
